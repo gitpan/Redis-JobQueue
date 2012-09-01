@@ -6,7 +6,7 @@ use strict;
 use warnings;
 use bytes;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 use Exporter qw( import );
 our @EXPORT_OK  = qw(
@@ -612,7 +612,7 @@ as well as the status and outcome objectives
 
 =head1 VERSION
 
-This documentation refers to C<Redis::JobQueue> version 0.03
+This documentation refers to C<Redis::JobQueue> version 0.04
 
 =head1 SYNOPSIS
 
