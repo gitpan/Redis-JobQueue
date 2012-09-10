@@ -1,5 +1,12 @@
 Revision history for Redis::JobQueue package
 
+0.05  Mon Sep  10 2012
+    CHANGES:
+    - Author and release tests moved to 'xt' directory
+
+    BUGFIXES:
+    - Eliminate unnecessary Data::UUID object construction
+
 0.04  Tue Sep  01 2012
     BUGFIXES:
     - t/00_Job/01_new.t

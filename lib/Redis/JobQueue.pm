@@ -6,7 +6,7 @@ use strict;
 use warnings;
 use bytes;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use Exporter qw( import );
 our @EXPORT_OK  = qw(
@@ -79,6 +79,7 @@ my %ERROR = (
     );
 
 my @job_fields = Redis::JobQueue::Job->job_attributes;
+my $uuid = new Data::UUID;
 
 #-- constructor ----------------------------------------------------------------
 
@@ -204,7 +205,6 @@ sub add_job {
             if ( $k =~ /^LPUSH$/i and $args{ $k } );
     }
 
-    my $uuid = new Data::UUID;
     my $id;
     do
     {
@@ -612,7 +612,7 @@ as well as the status and outcome objectives
 
 =head1 VERSION
 
-This documentation refers to C<Redis::JobQueue> version 0.04
+This documentation refers to C<Redis::JobQueue> version 0.05
 
 =head1 SYNOPSIS
 
