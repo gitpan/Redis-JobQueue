@@ -24,6 +24,7 @@ t/01_JobQueue/08_get_jobs.t
 t/01_JobQueue/09_quit.t
 t/01_JobQueue/10_max_datasize.t
 t/01_JobQueue/11_last_errorcode.t
+t/01_JobQueue/12_timeout.t
 xt/author/94_fixme.t
 xt/author/95_critic.t
 xt/release/96_kwalitee.t

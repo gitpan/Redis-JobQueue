@@ -1,5 +1,9 @@
 Revision history for Redis::JobQueue package
 
+0.06  Mon Sep  13 2012
+    BUGFIXES:
+    - The 'get_next_job' method work correctly when 'blocking' is true
+
 0.05  Mon Sep  10 2012
     CHANGES:
     - Author and release tests moved to 'xt' directory
