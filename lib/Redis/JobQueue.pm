@@ -6,7 +6,7 @@ use strict;
 use warnings;
 use bytes;
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 use Exporter qw( import );
 our @EXPORT_OK  = qw(
@@ -219,22 +219,18 @@ sub add_job {
     $job->id( $id );
     $job->status( STATUS_CREATED );
 
-# transaction start
     my $key = NAMESPACE.':'.$id;
     my $expire = $job->expire;
+
+# transaction start
     $self->_call_redis( 'MULTI' );
-    foreach my $field ( @job_fields )
-    {
-        $self->_call_redis( 'HSET', $key, $field, $job->$field // '' )
-            if $job->$field ne 'id';
-    }
-    $self->_call_redis( 'EXPIRE', $key, $expire )
-        if $expire;
+
+    $self->_call_redis( 'HSET', $key, $_, $job->$_ // '' ) for @job_fields;
+    $self->_call_redis( 'EXPIRE', $key, $expire ) if $expire;
 
     $key = NAMESPACE.':queue:'.$job->queue;
 # Warning: change '$id'
-    $id .= ' '.( time + $expire )
-        if $expire;
+    $id .= ' '.( time + $expire ) if $expire;
     $self->_call_redis( $to_left ? 'LPUSH' : 'RPUSH', $key, $id );
 
 # transaction end
@@ -468,6 +464,17 @@ sub get_jobs {
     return map { /$re/ } $self->_call_redis( 'KEYS', $key );
 }
 
+sub ping {
+    my $self        = shift;
+
+    $self->_set_last_errorcode( ENOERROR );
+
+    my $ret = eval { $self->_redis->ping };
+    $self->_redis_exception( $@ )
+        if $@;
+    return( ( $ret // '<undef>' ) eq 'PONG' ? 1 : 0 );
+}
+
 sub quit {
     my $self        = shift;
 
@@ -613,7 +620,7 @@ as well as the status and outcome objectives
 
 =head1 VERSION
 
-This documentation refers to C<Redis::JobQueue> version 0.10
+This documentation refers to C<Redis::JobQueue> version 0.11
 
 =head1 SYNOPSIS
 
@@ -952,6 +959,16 @@ Gets a list of job ids on the Redis server.
 The following examples illustrate uses of the C<get_jobs> method:
 
     @jobs = $jq->get_jobs;
+
+=head3 C<ping>
+
+This command is used to test if a connection is still alive.
+
+Returns 1 if a connection is still alive or 0 otherwise.
+
+The following examples illustrate uses of the C<ping> method:
+
+    $is_alive = $jq->ping;
 
 =head3 C<quit>
 
