@@ -1,4 +1,4 @@
-Redis::JobQueue package version 0.16
+Redis::JobQueue package version 1.00
 ====================================
 
 The Redis::JobQueue package is a set of Perl modules which provides a
@@ -25,14 +25,19 @@ you have the following packages installed before you install
 Redis::JobQueue :
 
    Data::UUID
+   Digest::SHA1
+   List::MoreUtils
    Mouse
    Params::Util
    Redis
+   Storable
 
 The Redis::JobQueue package has the following optional dependencies:
 
    Net::EmptyPort
+   Test::Deep
    Test::Exception
+   Test::NoWarnings
    Test::RedisServer
 
 If the optional modules are missing, some "prereq" tests are skipped.
@@ -50,19 +55,22 @@ DOCUMENTATION
 Every Redis::JobQueue package module has a man page.
 A simple description of each module is included below in the SEE ALSO section.
 
+SOURCE CODE
+Redis::JobQueue is hosted on GitHub:
+https://github.com/TrackingSoft/Redis-JobQueue
+
 SEE ALSO
 
 The basic operation of the Redis::JobQueue package modules:
 
-   Redis::JobQueue      - Object interface for creating, executing jobs
+   Redis::JobQueue      - Object interface for creating and executing jobs
                           queues, as well as monitoring the status and results
                           of jobs
-   Redis::JobQueue::Job - Object interface for jobs creating and manipulating
+   Redis::JobQueue::Job - Object interface for creating and manipulating jobs
 
 COPYRIGHT AND LICENCE
 
 Copyright (C) 2012-2013 by TrackingSoft LLC.
-All rights reserved.
 
 This package is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself. See perlartistic at

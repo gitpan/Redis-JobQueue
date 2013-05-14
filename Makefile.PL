@@ -14,13 +14,18 @@ my %config = (
 # more to the list $Module::CoreList::version{5.010}
     PREREQ_PM                   => {
         'Data::UUID'            => 1.217,
+        'Digest::SHA1'          => 2.13,
+        'List::MoreUtils'       => 0.33,
         'Mouse'                 => 0.97,
         'Params::Util'          => 1.07,
         'Redis'                 => 1.926,
+        'Storable'              => 2.39,
         },
     BUILD_REQUIRES              => {
         'Net::EmptyPort'        => 0,
+        'Test::Deep'            => 0.109,
         'Test::Exception'       => 0.31,
+        'Test::NoWarnings'      => 1.04,
         'Test::RedisServer'     => 0.04,
         },
     ( $] >= 5.005 ?
