@@ -6,7 +6,7 @@ use strict;
 use warnings;
 use bytes;
 
-our $VERSION = '1.00';
+our $VERSION = '1.01';
 
 use Exporter qw( import );
 our @EXPORT_OK  = qw(
@@ -1085,7 +1085,7 @@ Redis::JobQueue - Job queue management implemented using Redis server.
 
 =head1 VERSION
 
-This documentation refers to C<Redis::JobQueue> version 1.00
+This documentation refers to C<Redis::JobQueue> version 1.01
 
 =head1 SYNOPSIS
 
@@ -1150,7 +1150,7 @@ To see a brief but working code example of the C<Redis::JobQueue>
 package usage look at the L</"An Example"> section.
 
 Description of the used by C<Redis::JobQueue> data
-structures (on Redis server) is provided in L</"JobQueue data structure"> section.
+structures (on Redis server) is provided in L</"JobQueue data structure stored in Redis"> section.
 
 =head1 ABSTRACT
 
@@ -1191,32 +1191,35 @@ Simple methods for organizing producer, worker, and consumer clients.
 
 =over
 
-=item C<id> 
+=item C<id>
 
-An id that uniquely identifies the job, scalar
+An id that uniquely identifies the job, scalar.
 
 =item C<queue>
 
-Queue name in which job is placed, scalar
+Queue name in which job is placed, scalar.
 
-=item C<expire> 
+=item C<expire>
 
-For how long (seconds) job data structures will be kept in memory
+For how long (seconds) job data structures will be kept in memory.
 
-=item C<status> 
+=item C<status>
 
-Job status, scalar. See L<Redis::JobQueue::Job> for the list of pre-defined statuses.
+Job status, scalar. See L<Redis::JobQueue::Job|Redis::JobQueue::Job> L<EXPORT|Redis::JobQueue::Job/EXPORT> section
+for the list of pre-defined statuses.
 Can be also set to any arbitrary value.
 
 =item C<workload>, C<result>
 
-User-set data structures which will be serialized before stored in Redis.
+User-set data structures which will be serialized before stored in Redis server.
 Suitable for passing large amounts of data.
 
-=item *
+=item C<*>
 
-Any other custom-named field passed to constructor or update_job method will be stored as meta-data scalar in Redis.
-Suitable for storing scalar values with fast access (no serialization).
+Any other custom-named field passed to L</constructor> or L</update_job> method
+will be stored as metadata scalar in Redis server.
+Suitable for storing scalar values with fast access
+(will be serialized before stored in Redis server).
 
 =back
 
@@ -1230,9 +1233,7 @@ If invoked without any arguments, the constructor C<new> creates and returns
 a C<Redis::JobQueue> object that is configured with the default settings and uses
 local C<redis> server.
 
-=head3
-
-Caveats related to connection with Redis server
+=head3 Caveats related to connection with Redis server
 
 =over 3
 
@@ -1247,11 +1248,11 @@ L<Redis|Redis> C<new>: C<encoding =E<gt> undef>.
 
 When Redis connection is establed with C<encoding =E<gt> undef>, non-serialize-able
 fields (like status or message) passed in UTF-8 can not be transferred
-correctly to the L<Redis|Redis> server.
+correctly to the Redis server.
 
 =item *
 
-By default C<Redis::JobQueue> constructor creates connection to the L<Redis|Redis> server
+By default C<Redis::JobQueue> constructor creates connection to the Redis server
 with C<encoding =E<gt> undef> argument. If a different encoding is desired, pass an established
 connection as instance of L<Redis|Redis> class.
 
@@ -1326,7 +1327,7 @@ The following example illustrates a C<add_job()> call with all the valid argumen
 If used with the optional argument C<LPUSH =E<gt> 1>, the job is placed at the front of
 the queue and will be returned by the next call to get_next_job.
 
-TTL of job data on Redis server is set in accordance with the C<expire>
+TTL of job data on Redis server is set in accordance with the L</expire>
 attribute of the L<Redis::JobQueue::Job|Redis::JobQueue::Job> object. Make
 sure it's higher than the time needed to process the other jobs in the queue.
 
@@ -1374,11 +1375,11 @@ the job does not have metadata.
 
 The following examples illustrate uses of the C<get_job_meta_fields> method:
 
-    my $meta_data_href = $jq->get_job_meta_fields( $id );
+    my @fields = $jq->get_job_meta_fields( $id );
     # or
-    $meta_data_href = $jq->get_job_meta_fields( $job );
+    @fields = $jq->get_job_meta_fields( $job );
     # or
-    my $meta_data = $jq->get_job_meta_fields( $job->id );
+    @fields = $jq->get_job_meta_fields( $job->id );
 
 See L<meta_data|Redis::JobQueue::Job/meta_data> for more informations about
 the jobs metadata.
@@ -1432,7 +1433,7 @@ These examples illustrate a C<get_next_job> call with all the valid arguments:
         );
 
 TTL job data for the job resets on the Redis server in accordance with
-the C<expire> attribute of the job object.
+the L</expire> attribute of the job object.
 
 =head3 C<update_job( $job )>
 
@@ -1442,16 +1443,16 @@ object.
 
 Returns the number of attributes that were updated if the job was on the Redis
 server and C<undef> if it was not.
-When you change a single attribute, returns C<2> because L</updated> also changes.
+When you change a single attribute, returns C<2> because L<updated|Redis::JobQueue::Job/updated> also changes.
 
-Changing the C<expire> attribute is ignored.
+Changing the L</expire> attribute is ignored.
 
 The following examples illustrate uses of the C<update_job> method:
 
     $jq->update_job( $job );
 
 TTL job data for the job resets on the Redis server in accordance with
-the C<expire> attribute of the job object.
+the L</expire> attribute of the job object.
 
 =head3 C<delete_job( $job )>
 
@@ -1472,7 +1473,7 @@ Use this method immediately after receiving the results of the job for
 the early release of memory on the Redis server.
 
 To see a description of the C<Redis::JobQueue> data
-structure used on the Redis server look at the L</"JobQueue data structure"> section.
+structure used on the Redis server look at the L</"JobQueue data structure stored in Redis"> section.
 
 =head3 C<get_job_ids>
 
@@ -1702,7 +1703,7 @@ Piece of code wrapped in C<eval {...};> and analyze L</last_errorcode>
 
 =back
 
-In L</last_errortsode> recognizes the following:
+In L</last_errorcode> recognizes the following:
 
 =over 3
 
@@ -2000,7 +2001,7 @@ For example:
     ...
 
 After you create (L</add_job> method) or modify (L</update_job> method)
-the data set are within the time specified C<expire> attribute (seconds).
+the data set are within the time specified L</expire> attribute (seconds).
 For example:
 
     redis 127.0.0.1:6379> TTL JobQueue:478B9C84-C5B8-11E1-A2C5-D35E0A986783
