@@ -1,5 +1,10 @@
 Revision history for Redis::JobQueue package
 
+1.03  Tue Jun  25 2013
+    CHANGES:
+    - Added description of the Redis::JobQueue::Job attributes:
+      'progress', 'message'.
+
 1.02  Mon Jun  17 2013
     CHANGES:
     - Added standard job field: Time when job was 'failed' (user settable).

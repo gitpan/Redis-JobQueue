@@ -6,7 +6,7 @@ use strict;
 use warnings;
 use bytes;
 
-our $VERSION = '1.02';
+our $VERSION = '1.03';
 
 use Exporter qw( import );
 our @EXPORT_OK  = qw(
@@ -1104,7 +1104,7 @@ Redis::JobQueue - Job queue management implemented using Redis server.
 
 =head1 VERSION
 
-This documentation refers to C<Redis::JobQueue> version 1.02
+This documentation refers to C<Redis::JobQueue> version 1.03
 
 =head1 SYNOPSIS
 

@@ -5,7 +5,7 @@ use 5.010;
 use strict;
 use warnings;
 
-our $VERSION = '1.02';
+our $VERSION = '1.03';
 
 use Exporter qw( import );
 our @EXPORT_OK  = qw(
@@ -306,7 +306,7 @@ Redis::JobQueue::Job - Object interface for creating and manipulating jobs
 
 =head1 VERSION
 
-This documentation refers to C<Redis::JobQueue::Job> version 1.02
+This documentation refers to C<Redis::JobQueue::Job> version 1.03
 
 =head1 SYNOPSIS
 
@@ -467,6 +467,15 @@ A read method returns a reference to the data.
 A write method can receive both data or a reference to the data.
 
 =back
+
+=head3 C<progress>
+
+Optional attribute, the progress of the task,
+contains a user-defined value from 0 to 1.
+
+=head3 C<message>
+
+Optional attribute, a string message with additional user-defined information.
 
 =head3 C<created>
 
