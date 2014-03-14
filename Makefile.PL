@@ -25,14 +25,14 @@ my %config = (
         'Params::Util'          => 1.07,
         'Redis'                 => 1.963,
         'Storable'              => 2.39,
-        'Try::Tiny'             => 0.18,
+        'Try::Tiny'             => 0.19,
         },
     BUILD_REQUIRES              => {
-        'Net::EmptyPort'        => 0,
         'Test::Deep'            => 0.109,
         'Test::Exception'       => 0.31,
         'Test::NoWarnings'      => 1.04,
         'Test::RedisServer'     => 0.04,
+        'Test::TCP'             => 2.02,
         },
     META_MERGE          => {
         no_index                => {
@@ -46,11 +46,11 @@ my %config = (
         provides                => {
             'Redis::JobQueue'       => {
                 file                    => 'lib/Redis/JobQueue.pm',
-                version                 => '1.10'
+                version                 => '1.11'
             },
             'Redis::JobQueue::Job'  => {
                 file                    => 'lib/Redis/JobQueue/Job.pm',
-                version                 => '1.10'
+                version                 => '1.11'
             },
         },
     },

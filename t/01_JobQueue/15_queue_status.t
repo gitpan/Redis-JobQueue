@@ -4,7 +4,7 @@ use 5.010;
 use strict;
 use warnings;
 
-use lib 'lib';
+use lib 'lib', 't/tlib';
 
 use Test::More;
 plan "no_plan";
@@ -40,9 +40,13 @@ use Redis::JobQueue::Job qw(
     STATUS_FAILED
     );
 
+use Redis::JobQueue::Test::Utils qw(
+    get_redis
+);
+
 my $redis;
 my $real_redis;
-my $port = Net::EmptyPort::empty_port( 32637 ); # 32637-32766 Unassigned
+my $port = Net::EmptyPort::empty_port( DEFAULT_PORT );
 my $exists_real_redis = 1;
 #    eval { $real_redis = Redis->new( server => DEFAULT_SERVER.":".DEFAULT_PORT ) };
 if ( !$real_redis )
@@ -69,7 +73,7 @@ $real_redis->quit;
 #    $real_redis->flushall;
 #    $redis = $real_redis;
 # Test::RedisServer does not use timeout = 0
-$redis = Test::RedisServer->new( conf => { port => Net::EmptyPort::empty_port( 32637 ) }, timeout => 3 ) unless $redis;
+$redis = get_redis( conf => { port => Net::EmptyPort::empty_port( DEFAULT_PORT ) }, timeout => 3 ) unless $redis;
 isa_ok( $redis, 'Test::RedisServer' );
 
 #    my $jq = Redis::JobQueue->new();
