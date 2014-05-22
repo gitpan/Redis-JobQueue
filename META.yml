@@ -11,7 +11,7 @@ build_requires:
 configure_requires:
   ExtUtils::MakeMaker: '0'
 dynamic_config: 1
-generated_by: 'ExtUtils::MakeMaker version 6.9, CPAN::Meta::Converter version 2.140640'
+generated_by: 'ExtUtils::MakeMaker version 6.98, CPAN::Meta::Converter version 2.141170'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -26,10 +26,10 @@ no_index:
 provides:
   Redis::JobQueue:
     file: lib/Redis/JobQueue.pm
-    version: '1.11'
+    version: '1.12'
   Redis::JobQueue::Job:
     file: lib/Redis/JobQueue/Job.pm
-    version: '1.11'
+    version: '1.12'
 requires:
   Data::UUID: '1.217'
   Digest::SHA1: '2.13'
@@ -38,6 +38,6 @@ requires:
   Params::Util: '1.07'
   Redis: '1.963'
   Storable: '2.39'
-  Try::Tiny: '0.19'
+  Try::Tiny: '0.18'
   perl: '5.010'
-version: '1.11'
+version: '1.12'

@@ -25,7 +25,7 @@ my %config = (
         'Params::Util'          => 1.07,
         'Redis'                 => 1.963,
         'Storable'              => 2.39,
-        'Try::Tiny'             => 0.19,
+        'Try::Tiny'             => 0.18,
         },
     BUILD_REQUIRES              => {
         'Test::Deep'            => 0.109,
@@ -46,11 +46,11 @@ my %config = (
         provides                => {
             'Redis::JobQueue'       => {
                 file                    => 'lib/Redis/JobQueue.pm',
-                version                 => '1.11'
+                version                 => '1.12'
             },
             'Redis::JobQueue::Job'  => {
                 file                    => 'lib/Redis/JobQueue/Job.pm',
-                version                 => '1.11'
+                version                 => '1.12'
             },
         },
     },
