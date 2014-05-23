@@ -84,6 +84,7 @@ sub new_connect {
 #    isa_ok( $redis, 'Redis' );
 
     # For Test::RedisServer
+    $redis->stop if $redis;
     $redis = get_redis( conf =>
         {
             port                => Net::EmptyPort::empty_port( DEFAULT_PORT ),
@@ -103,7 +104,7 @@ sub new_connect {
     $jq->_call_redis( "DEL", $_ ) foreach $jq->_call_redis( "KEYS", "JobQueue:*" );
 }
 
-#-- maxmemory argument
+#-- check_maxmemory argument
 
 $maxmemory = 100;
 new_connect();

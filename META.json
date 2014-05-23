@@ -53,13 +53,13 @@
    "provides" : {
       "Redis::JobQueue" : {
          "file" : "lib/Redis/JobQueue.pm",
-         "version" : "1.12_2"
+         "version" : "1.12_3"
       },
       "Redis::JobQueue::Job" : {
          "file" : "lib/Redis/JobQueue/Job.pm",
-         "version" : "1.12_2"
+         "version" : "1.12_3"
       }
    },
    "release_status" : "testing",
-   "version" : "1.12_2"
+   "version" : "1.12_3"
 }

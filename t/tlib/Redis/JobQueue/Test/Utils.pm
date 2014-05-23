@@ -23,7 +23,8 @@ sub get_redis
     my ( $redis, $error );
     for ( 1..3 )
     {
-        diag "attempt = $_";
+# !!!!
+diag "attempt = $_";
         try
         {
             $redis = Test::RedisServer->new( @args );
@@ -31,11 +32,13 @@ sub get_redis
         catch
         {
             $error = $_;
+# !!!!
+diag "error: $error";
         };
         last unless $error;
         sleep 1;
     }
-    BAIL_OUT "failed to launch redis-server: $error" if $error;
+    BAIL_OUT $error if $error;
 
     return $redis;
 }
