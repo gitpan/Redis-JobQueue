@@ -21,7 +21,7 @@ sub get_redis
     my @args = @_;
 
     my ( $redis, $error );
-    for ( 1..10 )
+    for ( 1..3 )
     {
         diag "attempt = $_";
         try
@@ -35,7 +35,7 @@ sub get_redis
         last unless $error;
         sleep 1;
     }
-    BAIL_OUT "failed to launch redis-server" if $error;
+    BAIL_OUT "failed to launch redis-server: $error" if $error;
 
     return $redis;
 }
