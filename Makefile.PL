@@ -46,11 +46,11 @@ my %config = (
         provides                => {
             'Redis::JobQueue'       => {
                 file                    => 'lib/Redis/JobQueue.pm',
-                version                 => '1.12_4'
+                version                 => '1.12_5'
             },
             'Redis::JobQueue::Job'  => {
                 file                    => 'lib/Redis/JobQueue/Job.pm',
-                version                 => '1.12_4'
+                version                 => '1.12_5'
             },
         },
     },

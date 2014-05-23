@@ -27,6 +27,8 @@ sub get_redis
         } elsif ( ref( $redis ) eq 'Redis' ) {
             $redis->quit;
         }
+        undef $redis;
+        sleep 1;
     }
 
     my $error;
