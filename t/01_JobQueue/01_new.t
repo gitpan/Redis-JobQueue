@@ -83,7 +83,7 @@ SKIP: {
 # For Test::RedisServer
 $real_redis->quit;
 # Test::RedisServer does not use timeout = 0
-$redis = get_redis( conf => { port => Net::EmptyPort::empty_port( DEFAULT_PORT ) }, timeout => 3 ) unless $redis;
+$redis = get_redis( $redis, conf => { port => Net::EmptyPort::empty_port( DEFAULT_PORT ) }, timeout => 3 ) unless $redis;
 isa_ok( $redis, 'Test::RedisServer' );
 
 my ( $jq, $next_jq );

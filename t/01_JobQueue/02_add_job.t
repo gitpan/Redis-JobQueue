@@ -75,7 +75,7 @@ SKIP: {
 
 # For Test::RedisServer
 $real_redis->quit;
-$redis = get_redis( conf => { port => Net::EmptyPort::empty_port( DEFAULT_PORT ) } );
+$redis = get_redis( $redis, conf => { port => Net::EmptyPort::empty_port( DEFAULT_PORT ) } );
 isa_ok( $redis, 'Test::RedisServer' );
 
 my ( $jq, $job, $resulting_job, $job2, $job3, $ret, @arr );

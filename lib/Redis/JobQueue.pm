@@ -6,7 +6,7 @@ Redis::JobQueue - Job queue management implemented using Redis server.
 
 =head1 VERSION
 
-This documentation refers to C<Redis::JobQueue> version 1.12_3
+This documentation refers to C<Redis::JobQueue> version 1.12_4
 
 =cut
 
@@ -18,7 +18,7 @@ use warnings;
 
 # ENVIRONMENT ------------------------------------------------------------------
 
-our $VERSION = '1.12_3';
+our $VERSION = '1.12_4';
 
 use Exporter qw(
     import

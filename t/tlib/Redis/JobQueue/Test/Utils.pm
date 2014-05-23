@@ -18,9 +18,18 @@ use Try::Tiny;
 
 sub get_redis
 {
+    my $redis = shift;
     my @args = @_;
 
-    my ( $redis, $error );
+    if ( $redis ) {
+        if ( ref( $redis ) eq 'Test::RedisServer' ) {
+            $redis->stop;
+        } elsif ( ref( $redis ) eq 'Redis' ) {
+            $redis->quit;
+        }
+    }
+
+    my $error;
     for ( 1..3 )
     {
 # !!!!

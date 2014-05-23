@@ -1,6 +1,6 @@
 Revision history for Redis::JobQueue package
 
-1.12_1 - 1.12_3 Thu May  23 2014
+1.12_1 - 1.12_4 Thu May  24 2014
     CHANGES:
     - Test improved.
 
