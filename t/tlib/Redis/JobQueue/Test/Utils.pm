@@ -21,8 +21,9 @@ sub get_redis
     my @args = @_;
 
     my ( $redis, $error );
-    for ( 1..3 )
+    for ( 1..10 )
     {
+        diag "attempt = $_";
         try
         {
             $redis = Test::RedisServer->new( @args );
