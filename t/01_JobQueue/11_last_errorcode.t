@@ -49,30 +49,16 @@ use Redis::JobQueue::Job qw(
 
 use Redis::JobQueue::Test::Utils qw(
     get_redis
+    verify_redis
 );
 
 $| = 1;
 
-my $redis;
-my $real_redis;
-my $port = Net::EmptyPort::empty_port( DEFAULT_PORT );
-
-eval { $real_redis = Redis->new( server => DEFAULT_SERVER.":".DEFAULT_PORT ) };
-if ( !$real_redis )
-{
-    $redis = eval { Test::RedisServer->new( conf => { port => $port }, timeout => 3 ) };
-    if ( $redis )
-    {
-        eval { $real_redis = Redis->new( server => DEFAULT_SERVER.":".$port ) };
-    }
-}
-my $skip_msg;
-$skip_msg = "Redis server is unavailable" unless ( !$@ && $real_redis && $real_redis->ping );
+my ( $redis, $skip_msg, $port ) = verify_redis();
 
 SKIP: {
     diag $skip_msg if $skip_msg;
-    skip( "Redis server is unavailable", 1 ) unless ( !$@ && $real_redis && $real_redis->ping );
-$real_redis->quit;
+    skip( $skip_msg, 1 ) if $skip_msg;
 
 my ( $jq, $job, @jobs, $maxmemory, $vm, $policy );
 my $pre_job = {
@@ -86,10 +72,6 @@ my $pre_job = {
     };
 
 sub new_connect {
-    # For real Redis:
-#    $real_redis = Redis->new( server => DEFAULT_SERVER.":".DEFAULT_PORT );
-#    $redis = $real_redis;
-#    isa_ok( $redis, 'Redis' );
 
     # For Test::RedisServer
     $redis = get_redis( $redis, conf =>
@@ -171,7 +153,7 @@ new_connect();
 
 SKIP:
 {
-    skip( 'because Test::RedisServer required for that test', 1 ) if eval { $real_redis->ping };
+    skip( $skip_msg, 1 ) if $skip_msg;
 
     $maxmemory = 1024 * 1024;
     new_connect();
@@ -196,7 +178,7 @@ SKIP:
 
 SKIP:
 {
-    skip( 'because Test::RedisServer required for that test', 1 ) if eval { $real_redis->ping };
+    skip( $skip_msg, 1 ) if $skip_msg;
 
 #    $policy = "volatile-lru";       # -> remove the key with an expire set using an LRU algorithm
 #    $policy = "allkeys-lru";        # -> remove any key accordingly to the LRU algorithm
@@ -242,7 +224,7 @@ SKIP:
 
 SKIP:
 {
-    skip( 'because Test::RedisServer required for that test', 1 ) if eval { $real_redis->ping };
+    skip( $skip_msg, 1 ) if $skip_msg;
 
     $policy = "noeviction";         # -> don't expire at all, just return an error on write operations
 
