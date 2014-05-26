@@ -45,6 +45,7 @@ use Redis::JobQueue::Test::Utils qw(
     verify_redis
 );
 
+my $redis_error = "Unable to create test Redis server";
 my ( $redis, $skip_msg, $port ) = verify_redis();
 
 SKIP: {
@@ -64,10 +65,6 @@ my $pre_job = {
 
 my $maxmemory_mode;
 sub new_connect {
-    # For real Redis:
-#    $real_redis = Redis->new( server => DEFAULT_SERVER.":".DEFAULT_PORT );
-#    $redis = $real_redis;
-#    isa_ok( $redis, 'Redis' );
 
     # For Test::RedisServer
     $redis = get_redis( $redis, conf =>
@@ -78,6 +75,7 @@ sub new_connect {
             "maxmemory-policy"  => $policy,
             "maxmemory-samples" => 100,
         } );
+    skip( $redis_error, 1 ) unless $redis;
     isa_ok( $redis, 'Test::RedisServer' );
 
     $jq = Redis::JobQueue->new(

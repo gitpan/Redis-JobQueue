@@ -47,6 +47,7 @@ use Redis::JobQueue::Test::Utils qw(
 
 my $timeout = 1;
 
+my $redis_error = "Unable to create test Redis server";
 my ( $redis, $skip_msg, $port ) = verify_redis();
 
 SKIP: {
@@ -55,6 +56,7 @@ SKIP: {
 
 # For Test::RedisServer
 $redis = get_redis( $redis, conf => { port => Net::EmptyPort::empty_port( DEFAULT_PORT ) } );
+skip( $redis_error, 1 ) unless $redis;
 isa_ok( $redis, 'Test::RedisServer' );
 
 my ( $jq, $job, @jobs, $idx, @job_names, $to_left, $blocking, $name );

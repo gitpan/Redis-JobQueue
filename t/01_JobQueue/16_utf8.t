@@ -63,6 +63,7 @@ if ( !$redis ) {
 
 my $skip_msg;
 $skip_msg = "Redis server is unavailable" unless ( !$@ && $redis && $redis->ping );
+my $redis_error = "Unable to create test Redis server";
 
 SKIP: {
     diag $skip_msg if $skip_msg;
@@ -79,6 +80,7 @@ SKIP: {
 $redis = Redis->new(
     server      => DEFAULT_SERVER.":".$port,
 );
+skip( $redis_error, 1 ) unless $redis;
 isa_ok( $redis, 'Redis' );
 
 # default encoding
@@ -104,6 +106,7 @@ my $file_bin        = "\x61\xE2\x98\xBA\x62";
     $redis = Redis->new(
         server      => DEFAULT_SERVER.":".$port,
     );
+    skip( $redis_error, 1 ) unless $redis;
 
     lives_ok { $redis->set( utf8 => $file_euro ) } 'set utf8';
     ok !eq_deeply( $redis->get( 'utf8' ), $file_euro ), 'get not utf8';
@@ -125,6 +128,7 @@ my $file_bin        = "\x61\xE2\x98\xBA\x62";
     $redis = Redis->new(
         server      => DEFAULT_SERVER.":".$port,
     );
+    skip( $redis_error, 1 ) unless $redis;
 
     lives_ok { $redis->set( utf8 => $file_euro ) } 'set utf8';
     ok !eq_deeply( $redis->get( 'utf8' ), $file_euro ), 'get not utf8';
@@ -151,6 +155,7 @@ my $file_bin        = "\x61\xE2\x98\xBA\x62";
         $redis = Redis->new(
             server      => DEFAULT_SERVER.":".$port,
         );
+        skip( $redis_error, 1 ) unless $redis;
         my $pre_job = {
             queue       => 'lovely_queue',
             job         => 'strong_job',
@@ -189,6 +194,7 @@ my $file_bin        = "\x61\xE2\x98\xBA\x62";
         $redis = Redis->new(
             server      => DEFAULT_SERVER.":".$port,
         );
+        skip( $redis_error, 1 ) unless $redis;
         my $pre_job = {
             queue       => 'lovely_queue',
             job         => 'strong_job',
@@ -228,6 +234,7 @@ my $file_bin        = "\x61\xE2\x98\xBA\x62";
         $redis = Redis->new(
             server      => DEFAULT_SERVER.":".$port,
         );
+        skip( $redis_error, 1 ) unless $redis;
         my $pre_job = {
             queue       => 'lovely_queue',
             job         => 'strong_job',
@@ -266,6 +273,7 @@ my $file_bin        = "\x61\xE2\x98\xBA\x62";
         $redis = Redis->new(
             server      => DEFAULT_SERVER.":".$port,
         );
+        skip( $redis_error, 1 ) unless $redis;
         my $pre_job = {
             queue       => 'lovely_queue',
             job         => 'strong_job',
@@ -307,6 +315,7 @@ my $file_bin        = "\x61\xE2\x98\xBA\x62";
         $redis = Redis->new(
             server      => DEFAULT_SERVER.":".$port,
         );
+        skip( $redis_error, 1 ) unless $redis;
 
         # data is "protected"
         my $status = $data;
@@ -351,6 +360,7 @@ my $file_bin        = "\x61\xE2\x98\xBA\x62";
         $redis = Redis->new(
             server      => DEFAULT_SERVER.":".$port,
         );
+        skip( $redis_error, 1 ) unless $redis;
 
         # data is "protected"
 # The "problem" applies only to text fields 'status', 'message'
@@ -392,6 +402,7 @@ my $file_bin        = "\x61\xE2\x98\xBA\x62";
         $redis = Redis->new(
             server      => DEFAULT_SERVER.":".$port,
         );
+        skip( $redis_error, 1 ) unless $redis;
 
         # data is "protected"
         my $status = $data;
@@ -435,6 +446,7 @@ my $file_bin        = "\x61\xE2\x98\xBA\x62";
         $redis = Redis->new(
             server      => DEFAULT_SERVER.":".$port,
         );
+        skip( $redis_error, 1 ) unless $redis;
 
         my $pre_job = {
             queue       => 'lovely_queue',
@@ -465,6 +477,7 @@ my $file_bin        = "\x61\xE2\x98\xBA\x62";
         $redis = Redis->new(
             server      => DEFAULT_SERVER.":".$port,
         );
+        skip( $redis_error, 1 ) unless $redis;
 
         my $pre_job = {
             queue       => 'lovely_queue',
