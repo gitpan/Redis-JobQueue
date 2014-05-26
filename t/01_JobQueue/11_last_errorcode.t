@@ -153,13 +153,14 @@ new_connect();
 
 #-- E_MAX_MEMORY_LIMIT
 
-SKIP:
-{
-    skip( $skip_msg, 1 ) if $skip_msg;
+# !!!!
+#SKIP:
+#{
+#    skip( $skip_msg, 1 ) if $skip_msg;
 
     $maxmemory = 1024 * 1024;
     new_connect();
-    my ( undef, $max_datasize ) = $jq->_call_redis( 'CONFIG', 'GET', 'maxmemory' );
+    ( undef, $max_datasize ) = $jq->_call_redis( 'CONFIG', 'GET', 'maxmemory' );
     is $max_datasize, $maxmemory, "value is set correctly";
 
     $pre_job->{result} .= '*' x 1024;
@@ -174,13 +175,14 @@ SKIP:
         }
     }
     $jq->_call_redis( "DEL", $_ ) foreach $jq->_call_redis( "KEYS", "JobQueue:*" );
-}
+#}
 
 #-- job was removed by maxmemory-policy (E_JOB_DELETED)
 
-SKIP:
-{
-    skip( $skip_msg, 1 ) if $skip_msg;
+# !!!!
+#SKIP:
+#{
+#    skip( $skip_msg, 1 ) if $skip_msg;
 
 #    $policy = "volatile-lru";       # -> remove the key with an expire set using an LRU algorithm
 #    $policy = "allkeys-lru";        # -> remove any key accordingly to the LRU algorithm
@@ -191,7 +193,7 @@ SKIP:
 
     $maxmemory = 2 * 1024 * 1024;
     new_connect();
-    my ( undef, $max_datasize ) = $jq->_call_redis( 'CONFIG', 'GET', 'maxmemory' );
+    ( undef, $max_datasize ) = $jq->_call_redis( 'CONFIG', 'GET', 'maxmemory' );
     is $max_datasize, $maxmemory, "value is set correctly";
 
     $pre_job->{result} .= '*' x ( 1024 * 10 );
@@ -220,19 +222,20 @@ SKIP:
     note '$@: ', $@;
 
     $jq->_call_redis( "DEL", $_ ) foreach $jq->_call_redis( "KEYS", "JobQueue:*" );
-}
+#}
 
 #-- E_JOB_DELETED
 
-SKIP:
-{
-    skip( $skip_msg, 1 ) if $skip_msg;
+# !!!!
+#SKIP:
+#{
+#    skip( $skip_msg, 1 ) if $skip_msg;
 
     $policy = "noeviction";         # -> don't expire at all, just return an error on write operations
 
     $maxmemory = 1024 * 1024;
     new_connect();
-    my ( undef, $max_datasize ) = $jq->_call_redis( 'CONFIG', 'GET', 'maxmemory' );
+    ( undef, $max_datasize ) = $jq->_call_redis( 'CONFIG', 'GET', 'maxmemory' );
     is $max_datasize, $maxmemory, "value is set correctly";
 
 # $jq->get_next_job after the jobs expired
@@ -240,7 +243,7 @@ SKIP:
     $pre_job->{expire} = 1;
 
     eval { $job = $jq->add_job( $pre_job ) } for ( 1..10 );
-    my @jobs = $jq->get_job_ids;
+    @jobs = $jq->get_job_ids;
     ok scalar( @jobs ), "the jobs added";
     $jq->delete_job( $_ ) foreach @jobs;
     sleep $pre_job->{expire} * 2;
@@ -281,7 +284,7 @@ SKIP:
     note '$@: ', $@;
 
     $jq->_call_redis( "DEL", $_ ) foreach $jq->_call_redis( "KEYS", "JobQueue:*" );
-}
+#}
 
 #-- E_REDIS
 
