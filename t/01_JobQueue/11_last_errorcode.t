@@ -153,11 +153,6 @@ new_connect();
 
 #-- E_MAX_MEMORY_LIMIT
 
-# !!!!
-#SKIP:
-#{
-#    skip( $skip_msg, 1 ) if $skip_msg;
-
     $maxmemory = 1024 * 1024;
     new_connect();
     ( undef, $max_datasize ) = $jq->_call_redis( 'CONFIG', 'GET', 'maxmemory' );
@@ -175,14 +170,8 @@ new_connect();
         }
     }
     $jq->_call_redis( "DEL", $_ ) foreach $jq->_call_redis( "KEYS", "JobQueue:*" );
-#}
 
 #-- job was removed by maxmemory-policy (E_JOB_DELETED)
-
-# !!!!
-#SKIP:
-#{
-#    skip( $skip_msg, 1 ) if $skip_msg;
 
 #    $policy = "volatile-lru";       # -> remove the key with an expire set using an LRU algorithm
 #    $policy = "allkeys-lru";        # -> remove any key accordingly to the LRU algorithm
@@ -222,14 +211,8 @@ new_connect();
     note '$@: ', $@;
 
     $jq->_call_redis( "DEL", $_ ) foreach $jq->_call_redis( "KEYS", "JobQueue:*" );
-#}
 
 #-- E_JOB_DELETED
-
-# !!!!
-#SKIP:
-#{
-#    skip( $skip_msg, 1 ) if $skip_msg;
 
     $policy = "noeviction";         # -> don't expire at all, just return an error on write operations
 
@@ -284,7 +267,6 @@ new_connect();
     note '$@: ', $@;
 
     $jq->_call_redis( "DEL", $_ ) foreach $jq->_call_redis( "KEYS", "JobQueue:*" );
-#}
 
 #-- E_REDIS
 
