@@ -4,7 +4,7 @@
       "TrackingSoft LLC <sgladkov@trackingsoft.com>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "ExtUtils::MakeMaker version 6.98, CPAN::Meta::Converter version 2.141170",
+   "generated_by" : "ExtUtils::MakeMaker version 6.98, CPAN::Meta::Converter version 2.142690",
    "license" : [
       "perl_5"
    ],
@@ -24,6 +24,7 @@
    "prereqs" : {
       "build" : {
          "requires" : {
+            "ExtUtils::MakeMaker" : "0",
             "Test::Deep" : "0.109",
             "Test::Exception" : "0.31",
             "Test::NoWarnings" : "1.04",
@@ -43,7 +44,7 @@
             "List::MoreUtils" : "0.33",
             "Mouse" : "0.97",
             "Params::Util" : "1.07",
-            "Redis" : "1.963",
+            "Redis" : "1.976",
             "Storable" : "2.39",
             "Try::Tiny" : "0.18",
             "perl" : "5.010"
@@ -53,13 +54,13 @@
    "provides" : {
       "Redis::JobQueue" : {
          "file" : "lib/Redis/JobQueue.pm",
-         "version" : "1.13"
+         "version" : "1.14"
       },
       "Redis::JobQueue::Job" : {
          "file" : "lib/Redis/JobQueue/Job.pm",
-         "version" : "1.13"
+         "version" : "1.14"
       }
    },
    "release_status" : "stable",
-   "version" : "1.13"
+   "version" : "1.14"
 }

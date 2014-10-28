@@ -6,7 +6,7 @@ Redis::JobQueue - Job queue management implemented using Redis server.
 
 =head1 VERSION
 
-This documentation refers to C<Redis::JobQueue> version 1.13
+This documentation refers to C<Redis::JobQueue> version 1.14
 
 =cut
 
@@ -18,7 +18,7 @@ use warnings;
 
 # ENVIRONMENT ------------------------------------------------------------------
 
-our $VERSION = '1.13';
+our $VERSION = '1.14';
 
 use Exporter qw(
     import
@@ -59,7 +59,7 @@ use Params::Util qw(
     _NONNEGINT
     _STRING
 );
-use Redis;
+use Redis '1.976';
 use Redis::JobQueue::Job qw(
     STATUS_CREATED
     STATUS_WORKING
@@ -404,7 +404,7 @@ END_GET_JOB_DATA
 # Gets queue status from the Redis server
 $lua_script_body{queue_status} = <<"END_QUEUE_STATUS";
 local queue         = ARGV[1]
-local tm            = tonumber( ARGV[2] )
+local tm            = tonumber( ARGV[2] )   -- a floating seconds since the epoch
 
 local queue_key     = '${NAMESPACE}:queue:'..queue
 local queue_status  = {}
@@ -420,7 +420,7 @@ if queue then
             -- select the job ID and determine the value of a field 'created'
             local created = redis.call( 'HGET', '${NAMESPACE}:'..in_queue_id:match( '^(%S+)' ), 'created' )
             if created then
-                created = tonumber( created )   -- values are stored as strings
+                created = tonumber( created )   -- values are stored as strings (a floating seconds since the epoch)
                 -- initialize the calculated values
                 if not queue_status[ 'max_job_age' ] then
                     queue_status[ 'max_job_age' ] = 0
@@ -465,7 +465,7 @@ local result_status = {}
 -- memorize the names and values of what was possible to calculate
 for key, val in pairs( queue_status ) do
     table.insert( result_status, key )
-    table.insert( result_status, val )
+    table.insert( result_status, tostring( val ) )
 end
 
 return result_status
@@ -1461,6 +1461,8 @@ The following example illustrates use of the C<quit> method:
 sub quit {
     my ( $self ) = @_;
 
+    return if ${^GLOBAL_PHASE} eq 'DESTRUCT';
+
     $self->_error( E_NO_ERROR );
 
     try {
@@ -1536,7 +1538,7 @@ sub queue_status {
         $self->_lua_script_cmd( 'queue_status' ),
         0,
         $maybe_queue,
-        time,
+        Time::HiRes::time,
     );
 
     return \%qstatus;
